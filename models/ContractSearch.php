@@ -42,6 +42,7 @@ class ContractSearch extends Contract
     public function search($params)
     {
         $query = Contract::find();
+        $query->joinWith(['car', 'driver']);
 
         // add conditions that should always apply here
 
@@ -58,14 +59,58 @@ class ContractSearch extends Contract
         }
 
         // grid filtering conditions
+        /*if (Yii::$app->user->identity->login == 'admin') {
+            $query->andFilterWhere([
+                'id' => $this->id,
+                'car_id' => $this->car_id,
+                'driver_id' => $this->driver_id,
+                'status' => $this->status,
+                'first_date' => $this->first_date,
+                'second_date' => $this->second_date
+            ]);
+        } */
         $query->andFilterWhere([
             'id' => $this->id,
             'car_id' => $this->car_id,
             'driver_id' => $this->driver_id,
             'status' => $this->status,
             'first_date' => $this->first_date,
-            'second_date' => $this->second_date,
+            'second_date' => $this->second_date
+        ])->andFilterWhere(['car.state_num' => $this->car->state_num])
+            ->andFilterWhere(['driver.name' => $this->driver->name]);
+
+        return $dataProvider;
+    }
+
+    public function searchForAdmin($params)
+    {
+        $query = Contract::find();
+        $query->joinWith(['car', 'driver']);
+
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
         ]);
+
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+            $query->andFilterWhere([
+                'id' => $this->id,
+                'car_id' => $this->car_id,
+                'driver_id' => $this->driver_id,
+                'status' => $this->status,
+                'first_date' => $this->first_date,
+                'second_date' => $this->second_date
+            ]);
+
 
         return $dataProvider;
     }

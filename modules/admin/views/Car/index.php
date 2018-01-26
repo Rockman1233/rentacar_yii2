@@ -37,6 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'model',
             'colour',
             'state_num',
+            'owner',
 
             // 'price',
             // 'status',

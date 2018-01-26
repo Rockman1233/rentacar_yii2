@@ -121,4 +121,13 @@ class UserController extends Controller
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+
+    public function actionSetCar($id)
+    {
+        $user= $this->findModel($id);
+        echo '<pre>';
+        var_dump($user->cars);
+        echo '</pre>';
+        die();
+    }
 }

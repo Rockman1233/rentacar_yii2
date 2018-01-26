@@ -17,6 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <p>
         <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
+
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -29,6 +30,8 @@ $this->params['breadcrumbs'][] = $this->title;
             'drive_license',
             'birthday',
             'foto:ntext',
+            'login',
+            'password',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

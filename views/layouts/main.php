@@ -3,14 +3,15 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use app\assets\PublicAsset;
 use app\widgets\Alert;
+use yii\helpers\Url;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use app\assets\AppAsset;
 
-AppAsset::register($this);
+PublicAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -26,53 +27,59 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' => Yii::$app->name,
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top',
-        ],
-    ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'About', 'url' => ['/site/about']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
-        ],
-    ]);
-    NavBar::end();
-    ?>
-
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <?= Breadcrumbs::widget([
-            'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-        ]) ?>
-        <?= Alert::widget() ?>
-        <?= $content ?>
-    </div>
-</div>
+        <a class="navbar-brand" href="#">Rent a car</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="<? echo Url::toRoute(['site/index'])?>"">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
 
-<footer class="footer">
+                <?php if(Yii::$app->user->isGuest):?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<? echo Url::toRoute(['auth/login'])?>">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<? echo Url::toRoute(['auth/signup'])?>">Register</a>
+                </li>
+                <? else: ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<? echo Url::toRoute(['cabinet/index'])?>">Cabinet</a>
+                </li>
+                <?=  Html::beginForm(['auth/logout'], 'post')
+                    . Html::submitButton(
+                        'Logout (' . Yii::$app->user->identity->login . ')',
+                        ['class' => 'btn btn-link logout']
+                    )
+                    . Html::endForm()
+                    . '</li>'
+                    ?>
+                <? endif; ?>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- Page Content -->
+<?= $content ?>
+<!-- /.container -->
+
+<!-- Footer -->
+
+<footer class="py-5 bg-dark">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
     </div>
+    <!-- /.container -->
 </footer>
 
 <?php $this->endBody() ?>

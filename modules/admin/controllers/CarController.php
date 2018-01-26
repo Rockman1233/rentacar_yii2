@@ -3,9 +3,11 @@
 namespace app\modules\admin\controllers;
 
 use app\models\ImageUpload;
+use app\models\User;
 use Yii;
 use app\models\Car;
 use app\models\CarSearch;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -145,6 +147,43 @@ class CarController extends Controller
         }
         //если фоточка не была загружена возвращаем к полю загрузки
         return $this->render('image',['model'=>$model]);
+    }
+
+
+    public function actionSetUser($id)
+    {
+        $car= $this->findModel($id);
+        $selectedUser = $car->user->name;
+        $allUsers = User::find()->all();
+        $result = ArrayHelper::map($allUsers, 'id', 'name');
+
+        if(Yii::$app->request->isPost)
+        {
+            $user = Yii::$app->request->post('user');
+            if($car ->saveUser($user)) {
+                return $this->redirect(['index', 'id' => $car->id]);
+            }
+        }
+
+
+        return $this->render('user',[
+            'car' => $car,
+            'owner' => $selectedUser,
+            'allusers' => $result,
+            ]
+        );
+    }
+
+    public function actionShowContracts($id)
+    {
+        $car= $this->findModel($id);
+        $contracts = $car->contracts;
+
+
+        return $this->render('contracts',[
+                'contracts' => $contracts
+            ]
+        );
     }
 
 

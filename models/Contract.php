@@ -43,6 +43,8 @@ class Contract extends \yii\db\ActiveRecord
         ];
     }
 
+
+
     /**
      * @inheritdoc
      */
@@ -50,8 +52,8 @@ class Contract extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'car_id' => 'Car ID',
-            'driver_id' => 'Driver ID',
+            'car_id' => 'Car State Number',
+            'driver_id' => 'Driver Name',
             'status' => 'Status',
             'first_date' => 'First Date',
             'second_date' => 'Second Date',
@@ -73,4 +75,11 @@ class Contract extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'driver_id']);
     }
+
+    public function setStatus($status)
+    {
+        return $this->status = trim($status);
+    }
+
+
 }

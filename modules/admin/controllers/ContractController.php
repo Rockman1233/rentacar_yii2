@@ -36,7 +36,7 @@ class ContractController extends Controller
     public function actionIndex()
     {
         $searchModel = new ContractSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchForAdmin(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,

@@ -45,7 +45,10 @@ class ImageUpload extends Model {
 
     public function deleteCurrentImage($currentImage)
     {
-        unlink('../web/uploads/' . $currentImage);
+        if($currentImage) {
+            unlink('../web/uploads/' . $currentImage);
+        }
+
     }
 
 }

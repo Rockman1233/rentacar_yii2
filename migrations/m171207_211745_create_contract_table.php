@@ -5,7 +5,7 @@ use yii\db\Migration;
 /**
  * Handles the creation of table `contract`.
  */
-class m171207_211744_create_contract_table extends Migration
+class m171207_211745_create_contract_table extends Migration
 {
     /**
      * @inheritdoc
